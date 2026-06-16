@@ -7,7 +7,7 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Formulario de repositorios</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -15,6 +15,33 @@ const Tab2: React.FC = () => {
           <IonToolbar>
             <IonTitle size="large">Tab 2</IonTitle>
           </IonToolbar>
+          <IponicHeader>
+
+            <div className="form-container">
+
+              <IonicImput
+                className="form-input"
+                label="text"
+                placeholder="Ingrese el nombre del repositorio"
+                labelPacement="floating"
+              />
+
+              <IonicImput
+                className="form-input"
+                label="Description"
+                placeholder="Ingrese la descripcion del repositorio"
+                labelPacement="floating"
+                rows={4}
+                />
+
+                <IonicButton 
+                className="submit-button"
+                expand="block"
+                fill="solid"                color="primary"
+                >
+                  Guardar
+                </IonicButton>
+            </div>
         </IonHeader>
         <ExploreContainer name="Tab 2 page" />
       </IonContent>
