@@ -2,9 +2,9 @@
 
 ## Información del Estudiante
 
-- **Nombre:** [Tu nombre completo aquí]
-- **Carrera:** [Tu carrera]
-- **Fecha de inicio:** [Fecha]
+- **Nombre:** LeninCarcelén
+- **Carrera:** Desarrollo de software
+- **Fecha de inicio:** [13/6/2026]
 
 ---
 

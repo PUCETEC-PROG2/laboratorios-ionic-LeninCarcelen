@@ -1,13 +1,42 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { useEffect, useState } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonSpinner, IonText } from '@ionic/react';
+import { useIonViewWillEnter } from '@ionic/react';
+import RepoItem from '../components/RepoItem';
+import GithubService from '../services/GithubService';
+import { GithubRepo } from '../interfaces/Github';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
+  const [repositories, setRepositories] = useState<GithubRepo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchRepos = async () => {
+    setLoading(true);
+    try {
+      const repos = await GithubService.getUserRepos();
+      setRepositories(repos);
+      setError(null);
+    } catch {
+      setError('No se pudieron cargar los repositorios.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRepos();
+  }, []);
+
+  useIonViewWillEnter(() => {
+    fetchRepos();
+  });
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Mis Repositorios</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -16,32 +45,32 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Repositorios</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonItemSliding>
-              <IonItem>
-                <IonThumbnail slot="start">
-                  <IonImg src={repository.avatarUrl} />
-                </IonThumbnail>
-                <IonLabel>
-                  <h3>{repository.name}</h3>
-                  <p>{repository.description}</p>
-                  <p><strong>Language:</strong> {repository.language}</p>
-                </IonLabel>
-              </IonItem>
-              <IonItemOptions>
-                <IonIcon={pencil} slot="icon-only" />
-              </IonItemOptions color="danger">
-              <Icon icon={trash} slot="icon-only" />
-              
-              </IonItemSliding>
-            <IonList>
-                {repositories.map((repo) => (
-                    <RepoItem {...repo}/>
-                ))}
-            </IonList>
-            </IonItemSliding>
-    
-    <div className="repo-item"></div>
-        <ExploreContainer name="Tab 1 page" />
+
+        {loading && (
+          <div className="loading-container">
+            <IonSpinner name="crescent" />
+          </div>
+        )}
+
+        {error && (
+          <div className="error-message">
+            <IonText color="danger">{error}</IonText>
+          </div>
+        )}
+
+        {!loading && !error && (
+          <IonList>
+            {repositories.map((repo) => (
+              <RepoItem
+                key={repo.id}
+                name={repo.name}
+                description={repo.description || 'Sin descripción'}
+                language={repo.language || 'N/A'}
+                avatarUrl={repo.owner?.avatar_url || ''}
+              />
+            ))}
+          </IonList>
+        )}
       </IonContent>
     </IonPage>
   );
