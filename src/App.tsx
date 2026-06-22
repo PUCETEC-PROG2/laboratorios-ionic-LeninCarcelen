@@ -3,7 +3,6 @@ import {
   IonApp,
   IonIcon,
   IonLabel,
-  IonList,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -11,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, logoGithub, pencil, person} from 'ionicons/icons';
+import { add, logoGithub, person } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -45,7 +44,6 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { Icon } from 'ionicons/dist/types/components/icon/icon';
 
 setupIonicReact();
 
@@ -73,8 +71,8 @@ const App: React.FC = () => (
             <IonLabel>Repositorios</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Crear Repos</IonLabel>
+            <IonIcon aria-hidden="true" icon={add} />
+            <IonLabel>Crear</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon aria-hidden="true" icon={person} />
