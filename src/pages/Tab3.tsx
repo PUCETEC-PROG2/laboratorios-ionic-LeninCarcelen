@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IonCard, IonCardContent, IonCardSubtitle, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonSpinner, IonText } from '@ionic/react';
 import GithubService from '../services/GithubService';
-import { GithubUser } from '../interfaces/Github';
+import { GithubUser } from '../interfaces/GithubUser';
 import './Tab3.css';
 
 const Tab3: React.FC = () => {
@@ -14,8 +14,8 @@ const Tab3: React.FC = () => {
       try {
         const data = await GithubService.getUserInfo();
         setUser(data);
-      } catch {
-        setError('No se pudo cargar la información del usuario.');
+      } catch (err) {
+        setError('No se pudo cargar la información del usuario.' + (err as Error).message);
       } finally {
         setLoading(false);
       }

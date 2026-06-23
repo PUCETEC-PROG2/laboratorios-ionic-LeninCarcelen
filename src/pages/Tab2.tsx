@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonIcon } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
+import {createRepository} from '../services/GithubService';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', description: '' });
+  const [RepositoryData, setRepositoryData] = useState({ name: '', description: '' });
+    name: '',
+    description: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = React.useState('');
 
   return (
     <IonPage>

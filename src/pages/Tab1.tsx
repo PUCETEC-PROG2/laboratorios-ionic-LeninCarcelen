@@ -3,7 +3,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonSpinn
 import { useIonViewWillEnter } from '@ionic/react';
 import RepoItem from '../components/RepoItem';
 import GithubService from '../services/GithubService';
-import { GithubRepo } from '../interfaces/Github';
+import { GithubRepo } from '../interfaces/GithubUser';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
@@ -17,8 +17,8 @@ const Tab1: React.FC = () => {
       const repos = await GithubService.getUserRepos();
       setRepositories(repos);
       setError(null);
-    } catch {
-      setError('No se pudieron cargar los repositorios.');
+    } catch (err) {
+      setError('No se pudieron cargar los repositorios.' + (err as Error).message);
     } finally {
       setLoading(false);
     }
