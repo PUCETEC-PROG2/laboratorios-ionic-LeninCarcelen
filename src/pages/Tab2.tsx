@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonIcon } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonIcon, IonSpinner } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
 import {createRepository} from '../services/GithubService';
 import './Tab2.css';
@@ -7,11 +7,8 @@ import './Tab2.css';
 const Tab2: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [RepositoryData, setRepositoryData] = useState({ name: '', description: '' });
-    name: '',
-    description: '',
-  });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = React.useState('');
+  const [error, setError] = useState('');
 
   const saveRepository = async () => {
     setLoading(true);
@@ -24,12 +21,14 @@ const Tab2: React.FC = () => {
       });
 
       if (newRepository) {
-        setRepositoryData({ name: '', description: '' });
+        setFormData({ name: '', description: '' });
+        setRepositoryData(newRepository);
       } else {
         setError('Error al crear el repositorio');
       }
     } catch (err) {
       setError('Error al crear el repositorio');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -81,6 +80,12 @@ const Tab2: React.FC = () => {
         {loading && (
           <div className="loading-container">
             <IonSpinner name="crescent" />
+          </div>
+        )}
+        {error && <div style={{ color: 'red', padding: '10px' }}>{error}</div>}
+        {RepositoryData.name && (
+          <div style={{ padding: '10px', color: 'green' }}>
+            Repositorio creado: {RepositoryData.name}
           </div>
         )}
       </IonContent>

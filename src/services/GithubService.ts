@@ -13,13 +13,9 @@ const apiClient = axios.create({
   }
 });
 
-const getUserRepos = async (): Promise<GithubRepo[]> => {
+export const getUserRepos = async (): Promise<GithubRepo[]> => {
   try {
-    const response = await axios.get(`${GITHUB_API_URL}/user/repos`, {
-      headers: { 
-        Authorization: `Bearer ${GITHUB_TOKEN}` 
-      }
-    });
+    const response = await apiClient.get('/user/repos');
     if (response.status !== 200) {
       throw new Error(`Error obtenido repositorios: ${response.statusText}`);
     }
@@ -32,11 +28,7 @@ const getUserRepos = async (): Promise<GithubRepo[]> => {
 
 export const createRepository = async(repoPayload: RepositoryPayload) : Promise<GithubRepo | null> => {
   try {
-    const response = await axios.post(`${GITHUB_API_URL}/user/repos`, repoPayload, {
-      headers: { 
-        Authorization: `Bearer ${GITHUB_TOKEN}` 
-      }
-    });
+    const response = await apiClient.post('/user/repos', repoPayload);
     if (response.status !== 201) {
       throw new Error(`Error creating repository: ${response.statusText}`);
     }
@@ -49,11 +41,7 @@ export const createRepository = async(repoPayload: RepositoryPayload) : Promise<
 
 const getUserInfo = async (): Promise<GithubUser | null> => {
   try {
-    const response = await axios.get(`${GITHUB_API_URL}/user`, {
-      headers: { 
-        Authorization: `Bearer ${GITHUB_TOKEN}` 
-      }
-    });
+    const response = await apiClient.get('/user');
     if (response.status !== 200) {
       throw new Error(`Error obtenido usuario: ${response.statusText}`);
     }
@@ -66,7 +54,8 @@ const getUserInfo = async (): Promise<GithubUser | null> => {
 
 const GithubService = {
   getUserRepos,
-  getUserInfo
+  getUserInfo,
+  createRepository
 };
 
 export default GithubService;
