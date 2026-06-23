@@ -13,6 +13,28 @@ const Tab2: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = React.useState('');
 
+  const saveRepository = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const newRepository = await createRepository({
+        name: formData.name,
+        description: formData.description
+      });
+
+      if (newRepository) {
+        setRepositoryData({ name: '', description: '' });
+      } else {
+        setError('Error al crear el repositorio');
+      }
+    } catch (err) {
+      setError('Error al crear el repositorio');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -51,10 +73,16 @@ const Tab2: React.FC = () => {
             expand="block"
             fill="solid"
             color="primary"
+            onClick={saveRepository}
           >
             Guardar
           </IonButton>
         </div>
+        {loading && (
+          <div className="loading-container">
+            <IonSpinner name="crescent" />
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );
