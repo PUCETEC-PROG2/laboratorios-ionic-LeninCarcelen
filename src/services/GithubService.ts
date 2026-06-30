@@ -55,10 +55,18 @@ export const updateRepository = async(owner: string, repoName: string, repoPaylo
 export const deleteRepository = async(owner: string, repoName: string): Promise<boolean> => {
   try {
     const response = await apiClient.delete(`/repos/${owner}/${repoName}`);
-    return response.status === 204;
-  } catch (error) {
-    console.error('Error al eliminar el repositorio:' + (error as Error).message);
-    return false;
+    if (response.status === 204) return true;
+    throw new Error(`Error deleting repository: ${response.status} ${response.statusText}`);
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const errObj: any = error;
+      const status = errObj.response.status;
+      const msg = errObj.response.data?.message || errObj.response.statusText || String(errObj);
+      throw new Error(`GitHub API: ${status} - ${msg}`);
+    }
+    const message = typeof error === 'string' ? error : (error as Error)?.message;
+    throw new Error(message || 'Unknown error deleting repository');
   }
 };
 

@@ -17,7 +17,7 @@ import {
   IonToast,
 } from '@ionic/react';
 import { useIonViewWillEnter } from '@ionic/react';
-import { trashOutline, closeOutline, saveOutline } from 'ionicons/icons';
+import { trashOutline, closeOutline } from 'ionicons/icons';
 import RepoItem from '../components/RepoItem';
 import GithubService from '../services/GithubService';
 import { GithubRepo } from '../interfaces/GithubUser';
@@ -239,7 +239,7 @@ const Tab1: React.FC = () => {
                 </div>
               )}
               <IonButton expand="block" color="primary" onClick={saveEdit} disabled={submitting}>
-                <IonIcon slot="start" icon={saveOutline} /> Guardar cambios
+                Guardar cambios
               </IonButton>
             </div>
           </IonContent>
