@@ -81,7 +81,7 @@ const Tab2: React.FC = () => {
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Editar Repositorio</IonTitle>
+            <IonTitle size="large">Crear Repositorio</IonTitle>
           </IonToolbar>
         </IonHeader>
         <div className="form-container">
@@ -111,7 +111,7 @@ const Tab2: React.FC = () => {
             onClick={saveRepository}
             disabled={loading || !repoEdit}
           >
-            Actualizar
+            Guardar
           </IonButton>
 
           {!repoEdit && (
