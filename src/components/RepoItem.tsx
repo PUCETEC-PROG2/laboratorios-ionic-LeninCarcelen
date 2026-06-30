@@ -34,13 +34,11 @@ const RepoItem = ({ name, description, language, avatarUrl, onEdit, onDelete }: 
         {onEdit && (
           <IonItemOption color="medium" onClick={onEdit}>
             <IonIcon slot="start" icon={pencilOutline} />
-            Editar
           </IonItemOption>
         )}
         {onDelete && (
           <IonItemOption color="danger" onClick={onDelete}>
             <IonIcon slot="start" icon={trashOutline} />
-            Eliminar
           </IonItemOption>
         )}
       </IonItemOptions>
