@@ -1,44 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonIcon, IonSpinner, IonText } from '@ionic/react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonIcon, IonSpinner } from '@ionic/react';
 import { chevronBackOutline } from 'ionicons/icons';
-import { updateRepository } from '../services/GithubService';
+import { createRepository } from '../services/GithubService';
 import './Tab2.css';
 
-interface RepoEditState {
-  id: number;
-  originalName: string;
-  name: string;
-  description: string;
-  language: string;
-  ownerLogin: string;
-}
-
 const Tab2: React.FC = () => {
-  const location = useLocation<{ repoToEdit?: RepoEditState }>();
   const history = useHistory();
   const [formData, setFormData] = useState({ name: '', description: '' });
-  const [repoEdit, setRepoEdit] = useState<RepoEditState | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  useEffect(() => {
-    if (location.state?.repoToEdit) {
-      setRepoEdit(location.state.repoToEdit);
-      setFormData({
-        name: location.state.repoToEdit.name,
-        description: location.state.repoToEdit.description,
-      });
-    }
-  }, [location.state]);
-
   const saveRepository = async () => {
-    if (!repoEdit) {
-      setError('No hay repositorio para editar. Selecciona uno desde la lista.');
-      return;
-    }
-
     if (!formData.name.trim()) {
       setError('El nombre del repositorio es obligatorio.');
       return;
@@ -49,19 +23,21 @@ const Tab2: React.FC = () => {
     setSuccessMessage('');
 
     try {
-      const updatedRepository = await updateRepository(repoEdit.ownerLogin, repoEdit.originalName, {
+      const newRepository = await createRepository({
         name: formData.name,
         description: formData.description,
       });
 
-      if (updatedRepository) {
-        setSuccessMessage('Repositorio actualizado correctamente.');
-        setRepoEdit({ ...repoEdit, originalName: formData.name, name: formData.name, description: formData.description });
+      if (newRepository) {
+        setSuccessMessage('Repositorio creado correctamente.');
+        setFormData({ name: '', description: '' });
+        // Volver a la lista; Tab1 refresca en view enter
+        history.push('/tab1');
       } else {
-        setError('Error al actualizar el repositorio');
+        setError('Error al crear el repositorio');
       }
     } catch (err) {
-      setError('Error al actualizar el repositorio');
+      setError('Error al crear el repositorio');
       console.error(err);
     } finally {
       setLoading(false);
@@ -75,7 +51,7 @@ const Tab2: React.FC = () => {
           <IonButton fill="clear" slot="start" onClick={() => history.push('/tab1')}>
             <IonIcon icon={chevronBackOutline} />
           </IonButton>
-          <IonTitle>{repoEdit ? 'Editar Repositorio' : 'Editar repositorio'}</IonTitle>
+          <IonTitle>Crear Repositorio</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -109,14 +85,10 @@ const Tab2: React.FC = () => {
             fill="solid"
             color="primary"
             onClick={saveRepository}
-            disabled={loading || !repoEdit}
+            disabled={loading}
           >
-            Guardar
+            Crear
           </IonButton>
-
-          {!repoEdit && (
-            <IonText color="medium"></IonText>
-          )}
 
           {loading && (
             <div className="loading-container">

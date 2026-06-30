@@ -170,6 +170,12 @@ const Tab1: React.FC = () => {
           </div>
         )}
 
+        {loading && (
+          <div className="loading-container">
+            <IonSpinner name="crescent" />
+          </div>
+        )}
+
         {submitting && (
           <div className="loading-container">
             <IonSpinner name="crescent" />
