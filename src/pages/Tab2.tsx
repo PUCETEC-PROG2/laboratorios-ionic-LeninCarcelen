@@ -115,7 +115,7 @@ const Tab2: React.FC = () => {
           </IonButton>
 
           {!repoEdit && (
-            <IonText color="medium">Selecciona un repositorio desde la pestaña de repositorios para editarlo.</IonText>
+            <IonText color="medium"></IonText>
           )}
 
           {loading && (
