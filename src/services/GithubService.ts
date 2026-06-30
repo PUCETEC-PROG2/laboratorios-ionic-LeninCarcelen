@@ -39,6 +39,29 @@ export const createRepository = async(repoPayload: RepositoryPayload) : Promise<
   }
 };
 
+export const updateRepository = async(owner: string, repoName: string, repoPayload: Partial<RepositoryPayload>): Promise<GithubRepo | null> => {
+  try {
+    const response = await apiClient.patch(`/repos/${owner}/${repoName}`, repoPayload);
+    if (response.status !== 200) {
+      throw new Error(`Error updating repository: ${response.statusText}`);
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el repositorio:' + (error as Error).message);
+    return null;
+  }
+};
+
+export const deleteRepository = async(owner: string, repoName: string): Promise<boolean> => {
+  try {
+    const response = await apiClient.delete(`/repos/${owner}/${repoName}`);
+    return response.status === 204;
+  } catch (error) {
+    console.error('Error al eliminar el repositorio:' + (error as Error).message);
+    return false;
+  }
+};
+
 const getUserInfo = async (): Promise<GithubUser | null> => {
   try {
     const response = await apiClient.get('/user');
@@ -55,7 +78,9 @@ const getUserInfo = async (): Promise<GithubUser | null> => {
 const GithubService = {
   getUserRepos,
   getUserInfo,
-  createRepository
+  createRepository,
+  updateRepository,
+  deleteRepository,
 };
 
 export default GithubService;
